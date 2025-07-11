@@ -15,4 +15,4 @@
     src: templates/vector.yml.j2
     dest: "/etc/vector/vector.toml"
     mode: '0644'
-  notify: Reload vector service
+  notify: Restart vector service

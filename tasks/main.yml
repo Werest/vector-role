@@ -1,0 +1,17 @@
+---
+- name: Download Vector distribution
+  ansible.builtin.get_url:
+    url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}.x86_64.rpm"
+    dest: "./vector-{{ vector_version }}.rpm"
+    mode: '0644'
+- name: Install Vector
+  become: true
+  ansible.builtin.dnf:
+    name: "./vector-{{ vector_version }}.rpm"
+    state: present
+- name: Deploy Vector configuration
+  ansible.builtin.template:
+    src: templates/vector.yml.j2
+    dest: "/etc/vector/vector.toml"
+    mode: '0644'
+  notify: Reload vector service

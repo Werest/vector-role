@@ -63,7 +63,7 @@ Failed to connect to system scope bus via local transport: Host is down
 
 <details>
 <summary>Molecule test</summary>
-<p>
+```
 WARNING  Driver docker does not provide a schema.
 INFO     default scenario test matrix: dependency, cleanup, destroy, syntax, create, prepare, converge, idempotence, side_effect, verify, cleanup, destroy
 INFO     Performing prerun with role_name_check=0...
@@ -334,7 +334,7 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=3    changed=2    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
 
 INFO     Pruning extra files from scenario ephemeral directory
-</p>
+```
 </details>
 
 ---

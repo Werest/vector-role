@@ -1,0 +1,51 @@
+#RUN yum update -y && yum install -y epel-release && yum install -y ansible bash gcc git nmap-ncat bind-utils openssl-devel python3 python3-appdirs python3-arrow python3-certifi python3-click python3-devel python3-filelock python3-future python3-libselinux python3-pathspec python3-pexpect python3-pip python3-pluggy python3-psutil python3-pycparser python3-pyyaml python3-requests python3-sh python3-tabulate python3-toml python3-virtualenv sudo rsync yamllint && dnf clean all && rm -rf /var/cache/dnf/*
+FROM quay.io/centos/centos:10
+
+# Активация репозиториев CRB (CodeReady Builder) и EPEL
+RUN dnf install -y epel-release && \
+    dnf config-manager --set-enabled crb && \
+    dnf install -y dnf-plugins-core
+
+RUN yum update -y
+
+# Установка пакетов
+RUN dnf install -y \
+    ansible-core \
+    bash \
+    bind-utils \
+    gcc \
+    git \
+    nmap-ncat \
+    openssl-devel \
+    python3 \
+    python3-appdirs \
+    python3-arrow \
+    python3-certifi \
+    python3-click \
+    python3-devel \
+    python3-filelock \
+    python3-libselinux \
+    python3-pexpect \
+    python3-pip \
+    python3-psutil \
+    python3-pycparser \
+    python3-pyyaml \
+    python3-requests \
+    python3-sh \
+    python3-tabulate \
+    rsync \
+    sudo
+
+# Установка отсутствующих пакетов через pip
+RUN pip3 install \
+    future \
+    pathspec \
+    pluggy \
+    toml \
+    yamllint
+
+RUN dnf reinstall -y systemd
+
+# Очистка кеша
+RUN dnf clean all && \
+    rm -rf /var/cache/dnf/*

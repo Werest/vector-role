@@ -1,18 +1,36 @@
 ---
-- name: Download Vector distribution
+- name: Download Vector (CentOS)
   ansible.builtin.get_url:
     url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
-    dest: "./vector-{{ vector_version }}.rpm"
+    dest: "/tmp/vector-{{ vector_version }}.rpm"
     mode: '0644'
-- name: Install Vector
+  when: ansible_distribution == 'CentOS'
+
+- name: Install Vector (CentOS)
   become: true
   ansible.builtin.dnf:
-    name: "./vector-{{ vector_version }}.rpm"
+    name: "/tmp/vector-{{ vector_version }}.rpm"
     state: present
     disable_gpg_check: true
+  when: ansible_distribution == 'CentOS'
+
+- name: Download Vector (Ubuntu)
+  ansible.builtin.get_url:
+    url: "https://packages.timber.io/vector/{{ vector_version }}/vector_{{ vector_version }}-1_amd64.deb"
+    dest: "/tmp/vector-{{ vector_version }}.deb"
+    mode: '0644'
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install Vector (Ubuntu)
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/vector-{{ vector_version }}.deb"
+    allow_unauthenticated: true
+  when: ansible_distribution == 'Ubuntu'
+
 - name: Deploy Vector configuration
   ansible.builtin.template:
     src: templates/vector.yml.j2
-    dest: "/etc/vector/vector.toml"
+    dest: "/etc/vector/vector.yaml"
     mode: '0644'
   notify: Restart vector service

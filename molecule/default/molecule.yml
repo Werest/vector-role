@@ -1,0 +1,21 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: centos_last
+    image: centos_last
+    pre_build_image: false
+    dockerfile: Dockerfile.centos
+    command: /sbin/init
+    privileged: true # To start the container in privileged mode
+# https://ansible.readthedocs.io/projects/molecule/guides/systemd-container/#systemd-container
+  - name: ubuntu_latest
+    image: ubuntu_latest
+    pre_build_image: false
+    dockerfile: Dockerfile
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

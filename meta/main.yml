@@ -2,6 +2,8 @@ galaxy_info:
   author: Chigridov Konstantin
   description: This role install Vector
   company: RTK IT
+  role_name: vector
+  namespace: chigridovko
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value

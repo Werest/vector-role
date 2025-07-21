@@ -1,0 +1,22 @@
+---
+- name: Verify Vector installation
+  hosts: all
+  tasks:
+    # 1. Проверка валидности конфигурации Vector
+    - name: Run 'vector validate'
+      ansible.builtin.shell: vector validate
+      register: validate_result
+      changed_when: false
+      failed_when: validate_result.rc != 0
+      tags: validate
+
+    # 2. Проверка состояния сервиса
+    - name: Check Vector service status
+      ansible.builtin.shell: systemctl status vector
+      register: service_status
+      changed_when: false
+      failed_when: >
+        "Active: active (running)" not in service_status.stdout
+      # Игнорируем предупреждения Python в stderr
+      ignore_errors: false
+      tags: service
